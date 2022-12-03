@@ -12,11 +12,49 @@ function priorityOfDupedItem(rucksack: String): number {
 }
 
 function findDupe(firstCompartment: String, secondCompartment: String): String | undefined {
-    for (const char of firstCompartment.split("")) {
-        if (secondCompartment.includes(char)) {
-            return char;
+    return firstCompartment.split("").find((s) => secondCompartment.includes(s));
+}
+
+function findAllDupes(firstRucksack: String, secondRucksack: String): String[] {
+    return firstRucksack.split("").filter((s) => secondRucksack.includes(s));
+}
+
+function sumBadgePriorities(rucksacks: String[]): number {
+    let sum = 0;
+    let indexesAccountedFor: Set<number> = new Set();
+
+    outerloop:
+    for (let firstElfIdx = 0; firstElfIdx < rucksacks.length; firstElfIdx++) {
+        if (indexesAccountedFor.has(firstElfIdx)) {
+            continue;
+        }
+
+        for (let secondElfIdx = firstElfIdx + 1; secondElfIdx < rucksacks.length; secondElfIdx++) {
+            if (indexesAccountedFor.has(secondElfIdx)) {
+                continue;
+            }
+
+            const dupes = findAllDupes(rucksacks[firstElfIdx], rucksacks[secondElfIdx]);
+
+            for (let thirdElfIdx = secondElfIdx + 1; thirdElfIdx < rucksacks.length; thirdElfIdx++) {
+                if (indexesAccountedFor.has(thirdElfIdx)) {
+                    continue;
+                }
+
+                const potentialDupe = findDupe(dupes.join(), rucksacks[thirdElfIdx]);
+
+                if (potentialDupe) {
+                    sum += itemPriority(potentialDupe)
+                    indexesAccountedFor.add(firstElfIdx)
+                    indexesAccountedFor.add(secondElfIdx)
+                    indexesAccountedFor.add(thirdElfIdx)
+                    continue outerloop;
+                }
+            }
         }
     }
+
+    return sum;
 }
 
 function itemPriority(item: String): number {
@@ -32,5 +70,9 @@ function partOne(input: String[]): number {
     return input.reduce((sum, rucksack) => sum + priorityOfDupedItem(rucksack), 0);
 }
 
+function partTwo(input: String[]) {
+    return sumBadgePriorities(input);
+}
+
 console.log("The answer to part one is " + partOne(input));
-// console.log("The answer to part two is " + partTwo());
+console.log("The answer to part two is " + partTwo(input));
