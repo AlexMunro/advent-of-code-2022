@@ -31,6 +31,38 @@ function parseMovePairs(input: String[]): Move[][] {
   })
 }
 
+/**
+ * Infer the correct player move from a given result
+ */
+function secretlyParseMovePairs(input: String[]): Move[][] {
+  const opponentBase = "A".codePointAt(0)! - 1;
+
+  return input.map((pair) => {
+    const opponentMove = pair.codePointAt(0)! - opponentBase;
+
+    let playerMove;
+
+    switch(pair[2]) {
+      case "X": // lose
+        playerMove = (opponentMove + 3) % 4; // Subtract one, modulo 4
+        if (playerMove == 0) {
+          playerMove = 3;
+        }
+        break;
+      case "Y":  // draw
+        playerMove = opponentMove;
+        break;
+      case "Z" : // win
+        playerMove = (opponentMove % 3) + 1
+        break;
+      default:
+        throw new Error("Invalid move " + pair[2]);
+    }
+
+    return [opponentMove, playerMove];
+  })
+}
+
 function scoreForRound(round: Move[]): number {
   const [opponentMove, playerMove] = round;
 
@@ -52,4 +84,10 @@ function partOne(): number {
   return parsedMoves.reduce((sum, round) => sum + scoreForRound(round), 0);
 }
 
+function partTwo(): number {
+  const secretlyParsedMoves = secretlyParseMovePairs(input);
+  return secretlyParsedMoves.reduce((sum, round) => sum + scoreForRound(round), 0);
+}
+
 console.log("The answer to part one is " + partOne());
+console.log("The answer to part two is " + partTwo());
