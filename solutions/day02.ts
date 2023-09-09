@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 
-const file = fs.readFileSync("inputs/day02.txt", "utf-8");
-
-const input: String[] = file.split("\n").filter((s) => s != "");
+const input: () => string[] = () => fs.readFileSync("inputs/day02.txt", "utf-8")
+  .split("\n")
+  .filter((s) => s != "");
 
 enum Move {
   Rock = 1,
@@ -19,7 +19,7 @@ enum Move {
  *  Being 1 "more" wins, being equal draws and being 1 "less" loses
  */
 
-function parseMovePairs(input: String[]): Move[][] {
+function parseMovePairs(input: string[]): Move[][] {
   const opponentBase = "A".codePointAt(0)! - 1;
   const playerBase = "X".codePointAt(0)! - 1;
 
@@ -34,7 +34,7 @@ function parseMovePairs(input: String[]): Move[][] {
 /**
  * Infer the correct player move from a given result
  */
-function secretlyParseMovePairs(input: String[]): Move[][] {
+function secretlyParseMovePairs(input: string[]): Move[][] {
   const opponentBase = "A".codePointAt(0)! - 1;
 
   return input.map((pair) => {
@@ -79,15 +79,17 @@ function scoreForRound(round: Move[]): number {
   throw new Error("Invalid result: " + (playerMove - opponentMove));
 }
 
-function partOne(): number {
-  const parsedMoves = parseMovePairs(input);
+export function partOne(guide: string[]): number {
+  const parsedMoves = parseMovePairs(guide);
   return parsedMoves.reduce((sum, round) => sum + scoreForRound(round), 0);
 }
 
-function partTwo(): number {
-  const secretlyParsedMoves = secretlyParseMovePairs(input);
+export function partTwo(guide: string[]): number {
+  const secretlyParsedMoves = secretlyParseMovePairs(guide);
   return secretlyParsedMoves.reduce((sum, round) => sum + scoreForRound(round), 0);
 }
 
-console.log("The answer to part one is " + partOne());
-console.log("The answer to part two is " + partTwo());
+if (require.main === module) {
+  console.log("The answer to part one is " + partOne(input()));
+  console.log("The answer to part two is " + partTwo(input()));
+}
