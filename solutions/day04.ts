@@ -1,13 +1,13 @@
 import * as fs from 'fs';
 
-const file = fs.readFileSync("inputs/day04.txt", "utf-8");
-
-const input: String[] = file.split("\n").filter((s) => s != "");
+const input: () => string[] = () => fs.readFileSync("inputs/day04.txt", "utf-8")
+    .split("\n")
+    .filter((s) => s != "");
 
 type SectionRange = { beginning: number, end: number };
 type SectionRangePair = [SectionRange, SectionRange];
 
-function parseRanges(input: String[]): SectionRangePair[] {
+function parseRanges(input: string[]): SectionRangePair[] {
     const regex = /^(\d+)\-(\d+),(\d+)\-(\d+)$/;
 
     return input.map((rangeStr) => {
@@ -38,15 +38,17 @@ function numberInRange(n: number, range: SectionRange) {
     return n >= range.beginning && n <= range.end;
 }
 
-function partOne(input: String[]): number {
+export function partOne(input: string[]): number {
     const pairs = parseRanges(input);
     return overlappedRangeCount(pairs, rangesFullyOverlap);
 }
 
-function partTwo(input: String[]): number {
+export function partTwo(input: string[]): number {
     const pairs = parseRanges(input);
     return overlappedRangeCount(pairs, rangesPartlyOverlap);
 }
 
-console.log("The answer to part one is " + partOne(input));
-console.log("The answer to part two is " + partTwo(input));
+if (require.main === module) {
+    console.log("The answer to part one is " + partOne(input()));
+    console.log("The answer to part two is " + partTwo(input()));
+}
