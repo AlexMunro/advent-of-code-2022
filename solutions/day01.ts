@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-const input: number[][] = fs.readFileSync("inputs/day01.txt", "utf-8")
+const input: () => number[][] = () => fs.readFileSync("inputs/day01.txt", "utf-8")
     .split("\n\n")
     .filter((s) => s != "")
     .map(elfInput => elfInput.split("\n")
@@ -31,5 +31,7 @@ export function partTwo(elfFoods: number[][]): number {
     return sum(topThree(caloriesPerElf(elfFoods)));
 }
 
-console.log("The answer to part one is " + partOne(input));
-console.log("The answer to part two is " + partTwo(input));
+if (require.main === module) {
+    console.log("The answer to part one is " + partOne(input()));
+    console.log("The answer to part two is " + partTwo(input()));
+}
