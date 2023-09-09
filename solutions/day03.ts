@@ -1,25 +1,25 @@
 import * as fs from 'fs';
 
-const file = fs.readFileSync("inputs/day03.txt", "utf-8");
+const input: () => string[] = () => fs.readFileSync("inputs/day03.txt", "utf-8")
+    .split("\n")
+    .filter((s) => s != "");
 
-const input: String[] = file.split("\n").filter((s) => s != "");
-
-function priorityOfDupedItem(rucksack: String): number {
+function priorityOfDupedItem(rucksack: string): number {
     const firstCompartment = rucksack.slice(0, rucksack.length / 2);
     const secondCompartment = rucksack.slice(rucksack.length / 2);
     const dupedItem = findDupe(firstCompartment, secondCompartment)!;
     return itemPriority(dupedItem)
 }
 
-function findDupe(firstCompartment: String, secondCompartment: String): String | undefined {
+function findDupe(firstCompartment: string, secondCompartment: string): string | undefined {
     return firstCompartment.split("").find((s) => secondCompartment.includes(s));
 }
 
-function findAllDupes(firstRucksack: String, secondRucksack: String): String[] {
+function findAllDupes(firstRucksack: string, secondRucksack: string): string[] {
     return firstRucksack.split("").filter((s) => secondRucksack.includes(s));
 }
 
-function sumBadgePriorities(rucksacks: String[]): number {
+function sumBadgePriorities(rucksacks: string[]): number {
     let sum = 0;
     let indexesAccountedFor: Set<number> = new Set();
 
@@ -57,7 +57,7 @@ function sumBadgePriorities(rucksacks: String[]): number {
     return sum;
 }
 
-function itemPriority(item: String): number {
+function itemPriority(item: string): number {
     // They've reversed the orders of lower/upper case chars! Fiendish!
     if (item >= "a") {
         return item.charCodeAt(0) - "a".charCodeAt(0) + 1;
@@ -66,13 +66,15 @@ function itemPriority(item: String): number {
     }
 }
 
-function partOne(input: String[]): number {
+export function partOne(input: string[]): number {
     return input.reduce((sum, rucksack) => sum + priorityOfDupedItem(rucksack), 0);
 }
 
-function partTwo(input: String[]) {
+export function partTwo(input: string[]) {
     return sumBadgePriorities(input);
 }
 
-console.log("The answer to part one is " + partOne(input));
-console.log("The answer to part two is " + partTwo(input));
+if (require.main === module) {
+    console.log("The answer to part one is " + partOne(input()));
+    console.log("The answer to part two is " + partTwo(input()));
+}
