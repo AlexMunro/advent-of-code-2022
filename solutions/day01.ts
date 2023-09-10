@@ -1,12 +1,5 @@
 import * as fs from 'fs';
 
-const input: () => number[][] = () => fs.readFileSync("inputs/day01.txt", "utf-8")
-    .split("\n\n")
-    .filter((s) => s != "")
-    .map(elfInput => elfInput.split("\n")
-        .map(elfStr => parseInt(elfStr)
-    ));
-
 function caloriesPerElf(elfFoods: number[][]): number[] {
     return elfFoods.map((elf) => sum(elf));
 }
@@ -32,6 +25,13 @@ export function partTwo(elfFoods: number[][]): number {
 }
 
 if (require.main === module) {
-    console.log("The answer to part one is " + partOne(input()));
-    console.log("The answer to part two is " + partTwo(input()));
+    const input: number[][] = fs.readFileSync("inputs/day01.txt", "utf-8")
+        .split("\n\n")
+        .filter((s) => s != "")
+        .map(elfInput => elfInput.split("\n")
+            .map(elfStr => parseInt(elfStr)
+        ));
+
+    console.log("The answer to part one is " + partOne(input));
+    console.log("The answer to part two is " + partTwo(input));
 }

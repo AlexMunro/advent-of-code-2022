@@ -1,9 +1,5 @@
 import * as fs from 'fs';
 
-const input: () => string[] = () => fs.readFileSync("inputs/day04.txt", "utf-8")
-    .split("\n")
-    .filter((s) => s != "");
-
 type SectionRange = { beginning: number, end: number };
 type SectionRangePair = [SectionRange, SectionRange];
 
@@ -49,6 +45,10 @@ export function partTwo(input: string[]): number {
 }
 
 if (require.main === module) {
-    console.log("The answer to part one is " + partOne(input()));
-    console.log("The answer to part two is " + partTwo(input()));
+    const input: string[] = fs.readFileSync("inputs/day04.txt", "utf-8")
+        .split("\n")
+        .filter((s) => s != "");
+
+    console.log("The answer to part one is " + partOne(input));
+    console.log("The answer to part two is " + partTwo(input));
 }

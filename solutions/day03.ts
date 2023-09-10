@@ -1,9 +1,5 @@
 import * as fs from 'fs';
 
-const input: () => string[] = () => fs.readFileSync("inputs/day03.txt", "utf-8")
-    .split("\n")
-    .filter((s) => s != "");
-
 function priorityOfDupedItem(rucksack: string): number {
     const firstCompartment = rucksack.slice(0, rucksack.length / 2);
     const secondCompartment = rucksack.slice(rucksack.length / 2);
@@ -75,6 +71,10 @@ export function partTwo(input: string[]) {
 }
 
 if (require.main === module) {
-    console.log("The answer to part one is " + partOne(input()));
-    console.log("The answer to part two is " + partTwo(input()));
+    const input: string[] = fs.readFileSync("inputs/day03.txt", "utf-8")
+        .split("\n")
+        .filter((s) => s != "");
+
+    console.log("The answer to part one is " + partOne(input));
+    console.log("The answer to part two is " + partTwo(input));
 }
