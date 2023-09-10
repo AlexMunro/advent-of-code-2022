@@ -1,9 +1,9 @@
-import * as fs from 'fs';
+import * as fs from "fs";
 
 enum Move {
   Rock = 1,
   Paper = 2,
-  Scissors = 3
+  Scissors = 3,
 }
 
 /**
@@ -19,12 +19,11 @@ function parseMovePairs(input: string[]): Move[][] {
   const opponentBase = "A".codePointAt(0)! - 1;
   const playerBase = "X".codePointAt(0)! - 1;
 
-
   return input.map((pair) => {
     const opponentMove = pair.codePointAt(0)!;
     const playerMove = pair.codePointAt(2)!;
-    return [opponentMove - opponentBase, playerMove - playerBase]
-  })
+    return [opponentMove - opponentBase, playerMove - playerBase];
+  });
 }
 
 /**
@@ -38,25 +37,25 @@ function secretlyParseMovePairs(input: string[]): Move[][] {
 
     let playerMove;
 
-    switch(pair[2]) {
+    switch (pair[2]) {
       case "X": // lose
         playerMove = (opponentMove + 3) % 4; // Subtract one, modulo 4
         if (playerMove == 0) {
           playerMove = 3;
         }
         break;
-      case "Y":  // draw
+      case "Y": // draw
         playerMove = opponentMove;
         break;
-      case "Z" : // win
-        playerMove = (opponentMove % 3) + 1
+      case "Z": // win
+        playerMove = (opponentMove % 3) + 1;
         break;
       default:
         throw new Error("Invalid move " + pair[2]);
     }
 
     return [opponentMove, playerMove];
-  })
+  });
 }
 
 function scoreForRound(round: Move[]): number {
@@ -82,13 +81,17 @@ export function partOne(guide: string[]): number {
 
 export function partTwo(guide: string[]): number {
   const secretlyParsedMoves = secretlyParseMovePairs(guide);
-  return secretlyParsedMoves.reduce((sum, round) => sum + scoreForRound(round), 0);
+  return secretlyParsedMoves.reduce(
+    (sum, round) => sum + scoreForRound(round),
+    0,
+  );
 }
 
 if (require.main === module) {
-    const input: string[] = fs.readFileSync("inputs/day02.txt", "utf-8")
-      .split("\n")
-      .filter((s) => s != "");
+  const input: string[] = fs
+    .readFileSync("inputs/day02.txt", "utf-8")
+    .split("\n")
+    .filter((s) => s != "");
 
   console.log("The answer to part one is " + partOne(input));
   console.log("The answer to part two is " + partTwo(input));
