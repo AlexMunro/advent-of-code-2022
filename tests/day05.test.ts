@@ -1,4 +1,4 @@
-import { parseInstructions, partOne } from "../solutions/day05";
+import { parseInstructions, partOne, partTwo } from "../solutions/day05";
 
 describe("Day 05", () => {
   const craneInstructions: string[] = [
@@ -28,8 +28,14 @@ describe("Day 05", () => {
   });
 
   describe("partOne", () => {
-    it("returns which crate ends up on top of each stack", () => {
+    it("returns which crate would end up on top of each stack, per the CrateMover 9000", () => {
       expect(partOne(craneInstructions)).toEqual("CMZ");
+    });
+  });
+
+  describe("partTwo", () => {
+    it("returns which crate would end up on top of each stack, per the CrateMover 9001", () => {
+      expect(partTwo(craneInstructions)).toEqual("MCD");
     });
   });
 });

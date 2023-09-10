@@ -2,6 +2,7 @@ import * as fs from "fs";
 
 type Instructions = { stacks: string[][]; moves: Move[] };
 type Move = { quantity: number; fromStack: number; toStack: number };
+type CrateMover = (move: Move, instructions: Instructions) => void;
 
 export function parseInstructions(rawInstructions: string[]): Instructions {
   const stackCount = (rawInstructions[0].length + 1) / 4;
@@ -33,18 +34,44 @@ export function parseInstructions(rawInstructions: string[]): Instructions {
   return { stacks, moves };
 }
 
-export function partOne(rawInstructions: string[]): string {
+// Perform all moves
+function processInstructions(
+  rawInstructions: string[],
+  mover: CrateMover,
+): string {
   const instructions = parseInstructions(rawInstructions);
 
-  instructions.moves.forEach((move) => {
+  instructions.moves.forEach((move) => mover(move, instructions));
+
+  return instructions.stacks.map((stack) => stack[0]).join("");
+}
+
+export function partOne(rawInstructions: string[]): string {
+  const crateMover9000: CrateMover = (move, instructions) => {
     for (let i = 0; i < move.quantity; i++) {
       instructions.stacks[move.toStack - 1].unshift(
         instructions.stacks[move.fromStack - 1].shift() as string,
       );
     }
-  });
+  };
 
-  return instructions.stacks.map((stack) => stack[0]).join("");
+  return processInstructions(rawInstructions, crateMover9000);
+}
+
+export function partTwo(rawInstructions: string[]): string {
+  const crateMover9001: CrateMover = (move, instructions) => {
+    const chunkToMove = [];
+
+    for (let i = 0; i < move.quantity; i++) {
+      chunkToMove.push(
+        instructions.stacks[move.fromStack - 1].shift() as string,
+      );
+    }
+
+    instructions.stacks[move.toStack - 1].unshift(...chunkToMove);
+  };
+
+  return processInstructions(rawInstructions, crateMover9001);
 }
 
 if (require.main === module) {
@@ -53,4 +80,5 @@ if (require.main === module) {
     .split("\n");
 
   console.log(partOne(input));
+  console.log(partTwo(input));
 }
