@@ -24,7 +24,18 @@ export function partTwo(signal: string): number {
   return firstDistinctNCharsIndex(signal, 14);
 }
 
-if (require.main === module) {
+// Workaround because Bun Jest does not yet correctly set require/module
+function runningAsMain(): boolean {
+  if (typeof self === "undefined") {
+    // node
+    return require.main === module;
+  } else {
+    // bun
+    return !self.process.argv[1].includes("test.ts");
+  }
+}
+
+if (runningAsMain()) {
   const input: string = fs.readFileSync("inputs/day06.txt", "utf-8").trim();
   console.log(partOne(input));
   console.log(partTwo(input));
