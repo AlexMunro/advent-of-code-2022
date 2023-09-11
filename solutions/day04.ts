@@ -63,7 +63,18 @@ export function partTwo(input: string[]): number {
   return overlappedRangeCount(pairs, rangesPartlyOverlap);
 }
 
-if (require.main === module) {
+// Workaround because Bun Jest does not yet correctly set require/module
+function runningAsMain(): boolean {
+  if (typeof self === "undefined") {
+    // node
+    return require.main === module;
+  } else {
+    // bun
+    return !self.process.argv[1].includes("test.ts");
+  }
+}
+
+if (runningAsMain()) {
   const input: string[] = fs
     .readFileSync("inputs/day04.txt", "utf-8")
     .split("\n")

@@ -74,7 +74,18 @@ export function partTwo(rawInstructions: string[]): string {
   return processInstructions(rawInstructions, crateMover9001);
 }
 
-if (require.main === module) {
+// Workaround because Bun Jest does not yet correctly set require/module
+function runningAsMain(): boolean {
+  if (typeof self === "undefined") {
+    // node
+    return require.main === module;
+  } else {
+    // bun
+    return !self.process.argv[1].includes("test.ts");
+  }
+}
+
+if (runningAsMain()) {
   const input: string[] = fs
     .readFileSync("inputs/day05.txt", "utf-8")
     .split("\n");
