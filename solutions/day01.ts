@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import sum from "../utils/sum";
 
 function caloriesPerElf(elfFoods: number[][]): number[] {
   return elfFoods.map((elf) => sum(elf));
@@ -10,10 +11,6 @@ function mostCaloriesOnAnyElf(caloriesPerElf: number[]): number {
 
 function topThree(caloriesPerElf: number[]): number[] {
   return caloriesPerElf.sort((a, b) => a - b).slice(-3);
-}
-
-function sum(numbers: number[]): number {
-  return numbers.reduce((sum, n) => sum + n);
 }
 
 export function partOne(elfFoods: number[][]): number {
