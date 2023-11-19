@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import runningAsMain from "../utils/runningAsMain";
 
 type Instructions = { stacks: string[][]; moves: Move[] };
 type Move = { quantity: number; fromStack: number; toStack: number };
@@ -72,17 +73,6 @@ export function partTwo(rawInstructions: string[]): string {
   };
 
   return processInstructions(rawInstructions, crateMover9001);
-}
-
-// Workaround because Bun Jest does not yet correctly set require/module
-function runningAsMain(): boolean {
-  if (typeof self === "undefined") {
-    // node
-    return require.main === module;
-  } else {
-    // bun
-    return !self.process.argv[1].includes("test.ts");
-  }
 }
 
 if (runningAsMain()) {

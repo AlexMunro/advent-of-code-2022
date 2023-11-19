@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import runningAsMain from "../utils/runningAsMain";
 import sum from "../utils/sum";
 
 function caloriesPerElf(elfFoods: number[][]): number[] {
@@ -19,17 +20,6 @@ export function partOne(elfFoods: number[][]): number {
 
 export function partTwo(elfFoods: number[][]): number {
   return sum(topThree(caloriesPerElf(elfFoods)));
-}
-
-// Workaround because Bun Jest does not yet correctly set require/module
-function runningAsMain(): boolean {
-  if (typeof self === "undefined") {
-    // node
-    return require.main === module;
-  } else {
-    // bun
-    return !self.process.argv[1].includes("test.ts");
-  }
 }
 
 if (runningAsMain()) {

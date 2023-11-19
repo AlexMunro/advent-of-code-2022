@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import runningAsMain from "../utils/runningAsMain";
 
 function firstDistinctNCharsIndex(signal: string, n: number): number {
   let i = n;
@@ -22,17 +23,6 @@ export function partOne(signal: string): number {
 
 export function partTwo(signal: string): number {
   return firstDistinctNCharsIndex(signal, 14);
-}
-
-// Workaround because Bun Jest does not yet correctly set require/module
-function runningAsMain(): boolean {
-  if (typeof self === "undefined") {
-    // node
-    return require.main === module;
-  } else {
-    // bun
-    return !self.process.argv[1].includes("test.ts");
-  }
 }
 
 if (runningAsMain()) {

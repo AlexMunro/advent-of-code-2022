@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import runningAsMain from "../utils/runningAsMain";
 
 type SectionRange = { beginning: number; end: number };
 type SectionRangePair = [SectionRange, SectionRange];
@@ -61,17 +62,6 @@ export function partOne(input: string[]): number {
 export function partTwo(input: string[]): number {
   const pairs = parseRanges(input);
   return overlappedRangeCount(pairs, rangesPartlyOverlap);
-}
-
-// Workaround because Bun Jest does not yet correctly set require/module
-function runningAsMain(): boolean {
-  if (typeof self === "undefined") {
-    // node
-    return require.main === module;
-  } else {
-    // bun
-    return !self.process.argv[1].includes("test.ts");
-  }
 }
 
 if (runningAsMain()) {

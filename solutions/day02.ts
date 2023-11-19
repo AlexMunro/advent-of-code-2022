@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import runningAsMain from "../utils/runningAsMain";
 
 enum Move {
   Rock = 1,
@@ -85,17 +86,6 @@ export function partTwo(guide: string[]): number {
     (sum, round) => sum + scoreForRound(round),
     0,
   );
-}
-
-// Workaround because Bun Jest does not yet correctly set require/module
-function runningAsMain(): boolean {
-  if (typeof self === "undefined") {
-    // node
-    return require.main === module;
-  } else {
-    // bun
-    return !self.process.argv[1].includes("test.ts");
-  }
 }
 
 if (runningAsMain()) {

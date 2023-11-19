@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import runningAsMain from "../utils/runningAsMain";
 
 function priorityOfDupedItem(rucksack: string): number {
   const firstCompartment = rucksack.slice(0, rucksack.length / 2);
@@ -88,17 +89,6 @@ export function partOne(input: string[]): number {
 
 export function partTwo(input: string[]) {
   return sumBadgePriorities(input);
-}
-
-// Workaround because Bun Jest does not yet correctly set require/module
-function runningAsMain(): boolean {
-  if (typeof self === "undefined") {
-    // node
-    return require.main === module;
-  } else {
-    // bun
-    return !self.process.argv[1].includes("test.ts");
-  }
 }
 
 if (runningAsMain()) {
