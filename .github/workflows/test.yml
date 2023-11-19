@@ -12,11 +12,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '16'
-          cache: 'yarn'
+          node-version: '20'
+      - name: Install Yarn at the correct version
+        run: yarn set version 3.3.0
       - name: Install yarn dependencies
-        run: yarn install
+        uses: borales/actions-yarn@v3
+        with:
+          cmd: install
       - name: Run test suite
-        run: yarn test
+        uses: borales/actions-yarn@v3
+        with:
+          cmd: test
