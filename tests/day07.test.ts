@@ -1,4 +1,4 @@
-import { Directory, partOne } from "../solutions/day07";
+import { Directory, partOne, partTwo } from "../solutions/day07";
 
 describe("Directory", () => {
   const leafDirectory1 = new Directory({
@@ -88,6 +88,12 @@ describe("Day 07", () => {
   describe("partOne", () => {
     it("sums the size of directories up to size 100000", () => {
       expect(partOne(input)).toBe(95437);
+    });
+  });
+
+  describe("partTwo", () => {
+    it("returns the size of the smallest directory larger than 30000000", () => {
+      expect(partTwo(input)).toBe(24933642);
     });
   });
 });

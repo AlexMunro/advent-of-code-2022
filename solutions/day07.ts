@@ -140,10 +140,37 @@ export function partOne(rawTerminalLines: string[]): number {
   );
 }
 
+// Assumes that we do require more space and that we can get
+// enough by deleting one directory
+export function partTwo(rawTerminalLines: string[]): number {
+  const terminalLines = parseTerminalLines(rawTerminalLines);
+  const fileSystem = processTerminalLines(terminalLines);
+
+  const totalCapacity = 70000000;
+  const requiredCapacity = 30000000;
+  const amountToDelete = Math.abs(
+    totalCapacity - requiredCapacity - fileSystem.size(),
+  );
+
+  const dirsWithSizes = [
+    ...fileSystem.recursivelyEnumerateSubdirectories(),
+  ].map((dir) => ({
+    size: dir.size(),
+    dirname: dir.name,
+  }));
+
+  return Math.min(
+    ...[...fileSystem.recursivelyEnumerateSubdirectories()]
+      .map((dir) => dir.size())
+      .filter((size) => size >= amountToDelete),
+  );
+}
+
 if (runningAsMain()) {
   const input: string[] = fs
     .readFileSync("inputs/day07.txt", "utf-8")
     .split("\n")
     .filter((s) => s != "");
   console.log("The answer to part one is " + partOne(input));
+  console.log("The answer to part two is " + partTwo(input));
 }
